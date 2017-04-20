@@ -1,0 +1,106 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="de" lang="de">
+<head>
+<title>WDmmg 0.1</title>
+<meta http-equiv="content-type" content="text/html;charset=utf-8" />
+<meta http-equiv="content-script-type" content="text/javascript" />
+<meta http-equiv="content-style-type" content="text/css" />
+<meta http-equiv="content-language" content="de" />
+<meta name="generator" content="Easymap" />
+<link rel="stylesheet" type="text/css" href="https://dl.dropboxusercontent.com/u/21206989/WDmmg/map.css" />
+
+<script type="text/javascript" src="https://dl.dropboxusercontent.com/u/21206989/WDmmg/openlayers/OpenLayers.js"></script>
+<script type="text/javascript" src="https://www.openstreetmap.org/openlayers/OpenStreetMap.js"></script>
+<script type="text/javascript" src="https://dl.dropboxusercontent.com/u/21206989/WDmmg/util.js"></script>
+ 
+<script type="text/javascript">
+//<![CDATA[
+
+var map;
+
+var showPopupOnHover = false;
+text = new Array("Informationen zur Karte anzeigen","Informationen zur Karte verstecken");
+
+function drawmap() {
+    OpenLayers.Lang.setCode('de');
+    
+    map = new OpenLayers.Map('map', {
+        projection: new OpenLayers.Projection("EPSG:900913"),
+        displayProjection: new OpenLayers.Projection("EPSG:4326"),
+        controls: [
+		new OpenLayers.Control.MouseDefaults(),
+		new OpenLayers.Control.Attribution()],
+        maxExtent:
+            new OpenLayers.Bounds(-20037508.34,-20037508.34,
+                                    20037508.34, 20037508.34),
+        numZoomLevels: 18,
+        maxResolution: 156543,
+        units: 'meters'
+    });
+
+
+
+// Noch mehr Kontrollelemente hinzufügen..
+map.addControl(new OpenLayers.Control.LayerSwitcher());
+map.addControl(new OpenLayers.Control.PanZoomBar());
+
+
+
+// Position und Zoomstufe der Karte
+lon = 13.820919;
+lat = 51.016576;
+zoom = 12; 
+
+checkForPermalink();
+
+
+
+
+// Layer hinzufügen
+
+layer_markers = new OpenLayers.Layer.Markers("Marker", { projection: new OpenLayers.Projection("EPSG:4326"),visibility: true, displayInLayerSwitcher: true });
+layer_vectors = new OpenLayers.Layer.Vector("Zeichnungen", { displayInLayerSwitcher: false } );map.addLayer(layer_vectors);map.addLayer(layer_markers)
+layers = new Array();
+layer_layerMapnik = new OpenLayers.Layer.OSM.Mapnik("Mapnik");
+map.addLayer(layer_layerMapnik)
+layers.push(new Array(layer_layerMapnik,'layer_layerMapnik'));
+setLayer(0);
+
+
+// An die richtige Stelle springen..
+jumpTo(lon,lat,zoom);
+
+// Benutzte Marker Icons hinzufügen..
+icons = new Array();
+icons[0] = new Array('http://openlayers.org/api/img/marker.png','21','25','0.5','1');
+icons[3] = new Array('http://openlayers.org/api/img/marker-green.png','21','25','0.5','1');
+
+
+// Marker hinzufügen
+addMarker(layer_markers,13.759622,51.039151,"<b>Na du!</b><p />N51° 2.349 E13° 45.577",false,0);
+addMarker(layer_markers,13.792174339241,51.019333341387,"<b>Hey!</b><p />N51° 1.160 E13° 47.530",false,0);
+addMarker(layer_markers,13.761615,50.974315,"<b>Siehst du mich?</b><p />N50° 58.458 E13° 45.696",false,0);
+addMarker(layer_markers,13.862484,51.026372,"<b>Hier drüben!</b><p />N51° 1.582 E13° 51.749",false,0);
+addMarker(layer_markers,13.782839,51.033673,"<b>Huhu!</b><p />N51° 2.020 E13° 46.970",false,0);
+addMarker(layer_markers,13.835493,51.035509,"<b>Hallo!</b><p />N51° 2.130 E13° 50.129",false,0);
+
+geometries = new Array();
+
+
+// Nochmal was..
+jumpTo(lon, lat, zoom);
+
+checkUtilVersion(4);
+}
+
+//]]>
+    </script>
+</head>
+<body onload="drawmap();">
+	
+	<div id="descriptionToggle" onclick="toggleInfo()">Informationen zur Karte anzeigen</div>
+	<div id="description" class="hide">WDmmg 0.1</div>
+	<div id="map"></div>
+	<div class="hide"><p>Wenn Sie diesen Text sehen, dann haben Sie die HTML-Datei ohne die zusätzlich benötigten Dateien geöffnet. Wenn Sie versucht haben die Karte herunterzuladen, wurde das Downloadfenster möglicherweise aus irgendeinem Grund nicht geöffnet. Speichern Sie in diesem Fall einfach diese Seite ab.</p><p>If you see this text, you opened the map HTML-File without the necessary files. If you tried to download the map, the download dialog may not have opened for some reason. In this case just save this page.</p></div>
+</body>
+</html>
